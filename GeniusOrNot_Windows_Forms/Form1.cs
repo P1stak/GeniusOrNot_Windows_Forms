@@ -25,6 +25,7 @@ namespace GeniusOrNot_Windows_Forms
         public Form1()
         {
             InitializeComponent();
+            InitializeMenu();
             InitializeFile();
             questions = GetQuestions();
             answers = GetAnswers();
@@ -33,11 +34,49 @@ namespace GeniusOrNot_Windows_Forms
             panelResults.Visible = false;
             panelName.Visible = true;
         }
+        // инициализация меню
+        private void InitializeMenu()
+        {
+            // Обработчики событий
+            menuRestart.Click += (s, e) => RestartApplication();
+            menuResults.Click += (s, e) => ShowResults();
+            menuExit.Click += (s, e) => Application.Exit();
+        }
+        
+        private void RestartApplication()
+        {
+            Application.Restart();
+            Environment.Exit(0);
+        }
+        private void ShowResults()
+        {
+            panelName.Visible = false;
+            panelQuestions.Visible = false;
+            panelResults.Visible = true;
+            LoadResults();
+        }
         private void SetInitialState()
         {
             panelQuestions.Visible = false;
             panelResults.Visible = false;
+            panelName.Visible = true;
+            mainMenuStrip.Visible = true;
+
         }
+        private void menuExit_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Вы уверены, что хотите выйти?",
+                            "Подтверждение",
+                            MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else if (result == DialogResult.No) return;
+        }
+
+        // работа с меню
+        //--------------------------------------------------------//
         private void InitializeFile()
         {
             if (!File.Exists(filePath))
