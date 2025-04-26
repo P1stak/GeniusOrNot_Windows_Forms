@@ -35,6 +35,11 @@ namespace GeniusOrNot_Windows_Forms
             this.btnStartTest = new System.Windows.Forms.Button();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mainMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRestart = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuResults = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.panelResults = new System.Windows.Forms.Panel();
             this.btnShowResults = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -43,6 +48,7 @@ namespace GeniusOrNot_Windows_Forms
             this.txtAnswer = new System.Windows.Forms.TextBox();
             this.lblQuestion = new System.Windows.Forms.Label();
             this.panelName.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.panelResults.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panelQuestions.SuspendLayout();
@@ -83,6 +89,45 @@ namespace GeniusOrNot_Windows_Forms
             this.label1.Size = new System.Drawing.Size(111, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Введите ваше ФИО:";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenuStrip});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(401, 24);
+            this.menuStrip1.TabIndex = 6;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // mainMenuStrip
+            // 
+            this.mainMenuStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuRestart,
+            this.menuResults,
+            this.menuExit});
+            this.mainMenuStrip.Name = "mainMenuStrip";
+            this.mainMenuStrip.Size = new System.Drawing.Size(53, 20);
+            this.mainMenuStrip.Text = "Меню";
+            // 
+            // menuRestart
+            // 
+            this.menuRestart.Name = "menuRestart";
+            this.menuRestart.Size = new System.Drawing.Size(155, 22);
+            this.menuRestart.Text = "Перезапустить";
+            // 
+            // menuResults
+            // 
+            this.menuResults.Name = "menuResults";
+            this.menuResults.Size = new System.Drawing.Size(155, 22);
+            this.menuResults.Text = "Результаты";
+            // 
+            // menuExit
+            // 
+            this.menuExit.Name = "menuExit";
+            this.menuExit.Size = new System.Drawing.Size(155, 22);
+            this.menuExit.Text = "Выход";
+            this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
             // panelResults
             // 
@@ -126,7 +171,7 @@ namespace GeniusOrNot_Windows_Forms
             // 
             // btnSubmitAnswer
             // 
-            this.btnSubmitAnswer.Location = new System.Drawing.Point(159, 144);
+            this.btnSubmitAnswer.Location = new System.Drawing.Point(159, 251);
             this.btnSubmitAnswer.Name = "btnSubmitAnswer";
             this.btnSubmitAnswer.Size = new System.Drawing.Size(75, 23);
             this.btnSubmitAnswer.TabIndex = 2;
@@ -136,14 +181,14 @@ namespace GeniusOrNot_Windows_Forms
             // 
             // txtAnswer
             // 
-            this.txtAnswer.Location = new System.Drawing.Point(144, 74);
+            this.txtAnswer.Location = new System.Drawing.Point(144, 203);
             this.txtAnswer.Name = "txtAnswer";
             this.txtAnswer.Size = new System.Drawing.Size(100, 20);
             this.txtAnswer.TabIndex = 1;
             // 
             // lblQuestion
             // 
-            this.lblQuestion.Location = new System.Drawing.Point(0, 0);
+            this.lblQuestion.Location = new System.Drawing.Point(3, 109);
             this.lblQuestion.MaximumSize = new System.Drawing.Size(400, 60);
             this.lblQuestion.MinimumSize = new System.Drawing.Size(0, 60);
             this.lblQuestion.Name = "lblQuestion";
@@ -157,18 +202,23 @@ namespace GeniusOrNot_Windows_Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 600);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panelName);
             this.Controls.Add(this.panelQuestions);
             this.Controls.Add(this.panelResults);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Тест на гениальность";
             this.panelName.ResumeLayout(false);
             this.panelName.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.panelResults.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panelQuestions.ResumeLayout(false);
             this.panelQuestions.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -187,6 +237,11 @@ namespace GeniusOrNot_Windows_Forms
         private System.Windows.Forms.Button btnShowResults;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnSubmitAnswer;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem mainMenuStrip;
+        private ToolStripMenuItem menuRestart;
+        private ToolStripMenuItem menuResults;
+        private ToolStripMenuItem menuExit;
     }
 }
 
