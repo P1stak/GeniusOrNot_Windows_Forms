@@ -79,11 +79,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GeniusOrNot_Core\GeniusOrNot_Core.csproj">
-      <Project>{438ceb5f-bedd-440c-8e23-c91ef5746c69}</Project>
-      <Name>GeniusOrNot_Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
