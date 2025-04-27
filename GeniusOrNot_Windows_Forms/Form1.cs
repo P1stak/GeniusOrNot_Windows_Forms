@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace GeniusOrNot_Windows_Forms
@@ -11,40 +12,89 @@ namespace GeniusOrNot_Windows_Forms
         private readonly QuestionService _questionService = new QuestionService();
         private readonly ResultService _resultService = new ResultService();
 
-        private string filePath = "results.csv";
-        private int totalQuestions = 5;
-        private string[] questions;
-        private int[] answers;
-        private int correctAnswers = 0;
-        private int currentQuestion = 0;
-        private List<int> usedQuestions = new List<int>();
-        private Random random = new Random();
+        private int _correctAnswers;
+        private List<int> _usedQuestions = new List<int>();
 
         public Form1()
         {
             InitializeComponent();
+            InitializeApplicationState();
             InitializeMenu();
-            InitializeFile();
-            questions = GetQuestions();
-            answers = GetAnswers();
-            SetInitialState();
+
+            // Проверка существования файла результатов
+            if (!File.Exists("results.csv"))
+            {
+                File.WriteAllText("results.csv", "ФИО;Правильные ответы;Диагноз\n");
+            }
+        }
+        private void InitializeMenu()
+        {
+            menuRestart.Click += (s, e) => RestartApplication();
+            menuResults.Click += menuResults_Click;
+            menuExit.Click += menuExit_Click;
+        }
+        private void InitializeApplicationState()
+        {
             panelQuestions.Visible = false;
             panelResults.Visible = false;
             panelName.Visible = true;
         }
-        // инициализация меню
-        private void InitializeMenu()
+        private void btnStartTest_Click(object sender, EventArgs e)
         {
-            // Обработчики событий
-            menuRestart.Click += (s, e) => RestartApplication();
-            menuResults.Click += (s, e) => ShowResults();
-            menuExit.Click += (s, e) => Application.Exit();
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+            {
+                MessageBox.Show("Введите ФИО!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            StartTest();
         }
-        
+        private void StartTest()
+        {
+            _correctAnswers = 0;
+            _usedQuestions.Clear();
+
+            panelName.Visible = false;
+            panelQuestions.Visible = true;
+
+            ShowNextQuestion();
+        }
         private void RestartApplication()
         {
             Application.Restart();
             Environment.Exit(0);
+        }
+        private void LoadResults()
+        {
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+
+            // Настройка столбцов
+            dataGridView1.Columns.Add("Name", "ФИО");
+            dataGridView1.Columns.Add("CorrectAnswers", "Правильные ответы");
+            dataGridView1.Columns.Add("Diagnosis", "Диагноз");
+
+            // Автоматическое растягивание столбцов
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView1.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            try
+            {
+                var results = _resultService.LoadResults();
+                foreach (var result in results)
+                {
+                    var parts = result.Split(';');
+                    if (parts.Length >= 3)
+                    {
+                        dataGridView1.Rows.Add(parts[0], parts[1], parts[2]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки результатов: {ex.Message}");
+            }
         }
         private void ShowResults()
         {
@@ -53,134 +103,63 @@ namespace GeniusOrNot_Windows_Forms
             panelResults.Visible = true;
             LoadResults();
         }
-        private void SetInitialState()
-        {
-            panelQuestions.Visible = false;
-            panelResults.Visible = false;
-            panelName.Visible = true;
-            mainMenuStrip.Visible = true;
-
-        }
-        private void menuExit_Click(object sender, EventArgs e)
-        {
-            var result = MessageBox.Show("Вы уверены, что хотите выйти?",
-                            "Подтверждение",
-                            MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else if (result == DialogResult.No) return;
-        }
-
-        // работа с меню
-        //--------------------------------------------------------//
-        private void InitializeFile()
-        {
-            if (!File.Exists(filePath))
-            {
-                File.WriteAllText(filePath, "ФИО;Правильные ответы;Диагноз\n");
-            }
-        }
-        private string[] GetQuestions() => _questionService.GetQuestions();
-        private int[] GetAnswers() => _questionService.GetAnswers();
-
-        private void btnStartTest_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
-            {
-                MessageBox.Show("Введите ФИО!");
-                return;
-            }
-            // Используем QuestionService
-            int index = _questionService.GetRandomQuestionIndex(totalQuestions, usedQuestions);
-            usedQuestions.Add(index);
-            lblQuestion.Text = $"Вопрос {currentQuestion + 1}:\n{_questionService.GetQuestions()[index]}";
-
-
-            panelName.Visible = false;
-            panelQuestions.Visible = true;
-            correctAnswers = 0;
-            currentQuestion = 0;
-            usedQuestions.Clear();
-            ShowNextQuestion();
-
-
-        }
-
         private void ShowNextQuestion()
         {
-
-
-            if (currentQuestion >= totalQuestions)
+            if (_usedQuestions.Count >= _questionService.QuestionsCount)
             {
                 FinishTest();
                 return;
             }
 
-            int index;
-            do { index = random.Next(totalQuestions); }
-            while (usedQuestions.Contains(index));
+            var questionIndex = _questionService.GetRandomQuestionIndex(_usedQuestions);
+            _usedQuestions.Add(questionIndex);
 
-            usedQuestions.Add(index);
-            lblQuestion.Text = $"Вопрос {currentQuestion + 1}:\n{questions[index]}";
+            lblQuestion.Text = $"Вопрос {_usedQuestions.Count}:\n{_questionService.GetQuestion(questionIndex)}";
             txtAnswer.Clear();
-            currentQuestion++;
         }
 
         private void btnSubmitAnswer_Click(object sender, EventArgs e)
         {
             if (!int.TryParse(txtAnswer.Text, out int userAnswer))
             {
-                MessageBox.Show("Введите число!");
+                MessageBox.Show("Введите число!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            int correct = answers[usedQuestions[usedQuestions.Count - 1]];
-            if (userAnswer == correct) correctAnswers++;
+            var currentQuestionIndex = _usedQuestions.Last(); // попробуй если не заработает - var currentQuestionIndex = _usedQuestions[_usedQuestions.Count - 1];
+            if (userAnswer == _questionService.GetAnswer(currentQuestionIndex))
+            {
+                _correctAnswers++;
+            }
 
             ShowNextQuestion();
         }
         private void FinishTest()
         {
-            double score = (double)correctAnswers / totalQuestions * 100;
+            double score = (double)_correctAnswers / _questionService.QuestionsCount * 100;
             string diagnosis = _questionService.GetDiagnosis(score);
 
-            _resultService.SaveResult(txtName.Text, correctAnswers, diagnosis);
-
-            File.AppendAllText(filePath,
-                $"{txtName.Text};{correctAnswers};{diagnosis}\n");
+            _resultService.SaveResult(txtName.Text, _correctAnswers, diagnosis);
 
             panelQuestions.Visible = false;
             panelResults.Visible = true;
             LoadResults();
+
             MessageBox.Show($"Тест завершен! Ваш диагноз: {diagnosis}");
         }
-        private void LoadResults()
+        private void menuRestart_Click(object sender, EventArgs e) => Application.Restart();
+        private void menuResults_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Clear();
+            ShowResults();
+        }
 
-            // Создаем колонки вручную
-            dataGridView1.Columns.Add("ФИО", "ФИО");
-            dataGridView1.Columns.Add("ПравильныеОтветы", "Правильные ответы");
-            dataGridView1.Columns.Add("Диагноз", "Диагноз");
-
-            var results = _resultService.LoadResults();
-            for (int i = 0; i < results.Length; i++)
+        private void menuExit_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Вы уверены, что хотите выйти?", "Подтверждение",
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                var parts = results[i].Split(';');
-                dataGridView1.Rows.Add(parts[0], parts[1], parts[2]);
+                Application.Exit();
             }
         }
-
-        private void btnShowResults_Click(object sender, EventArgs e)
-        {
-            panelName.Visible = false;
-            panelQuestions.Visible = false;
-            panelResults.Visible = true;
-            LoadResults();
-        }
-
     }
 }
