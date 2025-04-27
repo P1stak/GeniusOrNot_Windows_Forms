@@ -82,13 +82,9 @@ namespace GeniusOrNot_Windows_Forms
             try
             {
                 var results = _resultService.LoadResults();
-                foreach (var result in results)
+                foreach (var item in results)
                 {
-                    var parts = result.Split(';');
-                    if (parts.Length >= 3)
-                    {
-                        dataGridView1.Rows.Add(parts[0], parts[1], parts[2]);
-                    }
+                    dataGridView1.Rows.Add(item.Name, item.CorrectAnswers, item.Diagnosis);
                 }
             }
             catch (Exception ex)
@@ -117,7 +113,19 @@ namespace GeniusOrNot_Windows_Forms
             lblQuestion.Text = $"Вопрос {_usedQuestions.Count}:\n{_questionService.GetQuestion(questionIndex)}";
             txtAnswer.Clear();
         }
+        private void FinishTest()
+        {
+            double score = (double)_correctAnswers / _questionService.QuestionsCount * 100;
+            string diagnosis = _questionService.GetDiagnosis(score);
 
+            _resultService.SaveResult(txtName.Text, _correctAnswers, diagnosis);
+
+            panelQuestions.Visible = false;
+            panelResults.Visible = true;
+            LoadResults();
+
+            MessageBox.Show($"Тест завершен! Ваш диагноз: {diagnosis}");
+        }
         private void btnSubmitAnswer_Click(object sender, EventArgs e)
         {
             if (!int.TryParse(txtAnswer.Text, out int userAnswer))
@@ -133,19 +141,6 @@ namespace GeniusOrNot_Windows_Forms
             }
 
             ShowNextQuestion();
-        }
-        private void FinishTest()
-        {
-            double score = (double)_correctAnswers / _questionService.QuestionsCount * 100;
-            string diagnosis = _questionService.GetDiagnosis(score);
-
-            _resultService.SaveResult(txtName.Text, _correctAnswers, diagnosis);
-
-            panelQuestions.Visible = false;
-            panelResults.Visible = true;
-            LoadResults();
-
-            MessageBox.Show($"Тест завершен! Ваш диагноз: {diagnosis}");
         }
         private void menuRestart_Click(object sender, EventArgs e) => Application.Restart();
         private void menuResults_Click(object sender, EventArgs e)
