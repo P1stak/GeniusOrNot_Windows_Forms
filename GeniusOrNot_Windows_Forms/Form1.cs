@@ -21,7 +21,6 @@ namespace GeniusOrNot_Windows_Forms
             InitializeComponent();
             InitializeApplicationState();
             InitializeMenu();
-            menuQuestions.Click += menuQuestions_Click;
         }
         private void InitializeMenu()
         {
