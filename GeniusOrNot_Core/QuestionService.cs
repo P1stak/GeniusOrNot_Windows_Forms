@@ -91,13 +91,7 @@ namespace GeniusOrNot_Core
         {              
             string json = JsonConvert.SerializeObject(_questions, Formatting.Indented);
             File.WriteAllText(_questionpath, json);
-            MessageBox.Show($"файл сохранен в {_questionpath}");
         }
-
-
-
-
-
 
         public string GetQuestion(int index) => _questions[index].Question;
         public int GetAnswer(int index) => _questions[index].Answer;

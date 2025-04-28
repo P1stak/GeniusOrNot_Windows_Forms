@@ -47,7 +47,9 @@
             this.dataGridViewQuestions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewQuestions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewQuestions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewQuestions.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.dataGridViewQuestions.Location = new System.Drawing.Point(20, 40);
             this.dataGridViewQuestions.Name = "dataGridViewQuestions";
             this.dataGridViewQuestions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;

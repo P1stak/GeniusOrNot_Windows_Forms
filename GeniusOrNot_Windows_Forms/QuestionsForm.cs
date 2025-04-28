@@ -21,9 +21,6 @@ namespace GeniusOrNot_Windows_Forms
             _questionService = new QuestionService();
             SetupDataGridView();
             LoadQuestion();
-
-            btnAddQuestion.Click += (s, e) => { this.DialogResult = DialogResult.OK; this.Close(); };
-
         }
 
         private void SetupDataGridView()
@@ -35,6 +32,7 @@ namespace GeniusOrNot_Windows_Forms
 
             dataGridViewQuestions.Columns["Number"].Width = 40;
             dataGridViewQuestions.Columns["Answer"].Width = 60;
+
         }
 
         private void LoadQuestion()
@@ -59,27 +57,36 @@ namespace GeniusOrNot_Windows_Forms
             {
                 if (string.IsNullOrWhiteSpace(txtNewQuestion.Text))
                 {
-                    MessageBox.Show("Введите текст вопроса!");
+                    MessageBox.Show("Введите текст вопроса!", "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 if (!int.TryParse(txtNewAnswer.Text, out int answer))
                 {
-                    MessageBox.Show("Ответ должен быть числом!");
+                    MessageBox.Show("Ответ должен быть числом!", "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 // Добавляем вопрос
                 _questionService.AddQuestion(txtNewQuestion.Text, answer);
 
+                // Очищаем поля для нового ввода
                 txtNewQuestion.Text = "";
                 txtNewAnswer.Text = "";
 
+                // Обновляем таблицу (но НЕ закрываем форму)
                 LoadQuestion();
+                txtNewQuestion.Focus();
+
+                // Фокус на поле вопроса для удобства
+                txtNewQuestion.Focus();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ошибка {ex.Message}");         
+                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
 
@@ -88,20 +95,24 @@ namespace GeniusOrNot_Windows_Forms
         {
             if (dataGridViewQuestions.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Выберите вопрос для удаления!");
+                MessageBox.Show("Выберите вопрос для удаления!", "Ошибка",
+                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
                 int selectedIndex = dataGridViewQuestions.SelectedRows[0].Index;
-                MessageBox.Show($"Удаляем вопрос с индексом: {selectedIndex}");
                 _questionService.RemoveQuestion(selectedIndex);
-                LoadQuestion();
+                LoadQuestion(); // Просто обновляем список (форма НЕ закрывается)
+
+                if (dataGridViewQuestions.Rows.Count > 0)
+                    dataGridViewQuestions.Focus();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка удаления {ex.Message}");
+                MessageBox.Show($"Ошибка удаления: {ex.Message}", "Ошибка",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
