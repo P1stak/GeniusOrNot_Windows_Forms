@@ -33,10 +33,12 @@ namespace GeniusOrNot_Windows_Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mainMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRestart = new System.Windows.Forms.ToolStripMenuItem();
             this.menuResults = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuQuestions = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.panelResults = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -55,7 +57,8 @@ namespace GeniusOrNot_Windows_Forms
             this.txtNewQuestion = new System.Windows.Forms.TextBox();
             this.txtNewAnswer = new System.Windows.Forms.TextBox();
             this.lblManageQuestions = new System.Windows.Forms.Label();
-            this.menuQuestions = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblTimer = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.panelResults.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -98,6 +101,13 @@ namespace GeniusOrNot_Windows_Forms
             this.menuResults.Size = new System.Drawing.Size(205, 22);
             this.menuResults.Text = "Результаты";
             // 
+            // menuQuestions
+            // 
+            this.menuQuestions.Name = "menuQuestions";
+            this.menuQuestions.Size = new System.Drawing.Size(205, 22);
+            this.menuQuestions.Text = "Управление вопросами";
+            this.menuQuestions.Click += new System.EventHandler(this.menuQuestions_Click);
+            // 
             // menuExit
             // 
             this.menuExit.Name = "menuExit";
@@ -129,6 +139,7 @@ namespace GeniusOrNot_Windows_Forms
             // panelQuestions
             // 
             this.panelQuestions.Controls.Add(this.btnSubmitAnswer);
+            this.panelQuestions.Controls.Add(this.lblTimer);
             this.panelQuestions.Controls.Add(this.txtAnswer);
             this.panelQuestions.Controls.Add(this.lblQuestion);
             this.panelQuestions.Location = new System.Drawing.Point(0, 0);
@@ -266,12 +277,22 @@ namespace GeniusOrNot_Windows_Forms
             this.lblManageQuestions.TabIndex = 5;
             this.lblManageQuestions.Text = "Управление вопросами";
             // 
-            // menuQuestions
+            // timer1
             // 
-            this.menuQuestions.Name = "menuQuestions";
-            this.menuQuestions.Size = new System.Drawing.Size(205, 22);
-            this.menuQuestions.Text = "Управление вопросами";
-            this.menuQuestions.Click += new System.EventHandler(this.menuQuestions_Click);
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // lblTimer
+            // 
+            this.lblTimer.AutoSize = true;
+            this.lblTimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTimer.ForeColor = System.Drawing.Color.Red;
+            this.lblTimer.Location = new System.Drawing.Point(182, 305);
+            this.lblTimer.Name = "lblTimer";
+            this.lblTimer.Size = new System.Drawing.Size(30, 24);
+            this.lblTimer.TabIndex = 6;
+            this.lblTimer.Text = "10";
+            this.lblTimer.Visible = false;
             // 
             // Form1
             // 
@@ -325,6 +346,8 @@ namespace GeniusOrNot_Windows_Forms
         private TextBox txtNewAnswer;
         private Label lblManageQuestions;
         private ToolStripMenuItem menuQuestions;
+        private Label lblTimer;
+        private Timer timer1;
     }
 }
 

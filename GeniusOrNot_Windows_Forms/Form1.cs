@@ -1,6 +1,7 @@
 ﻿using GeniusOrNot_Core;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,6 +16,8 @@ namespace GeniusOrNot_Windows_Forms
 
         private int _correctAnswers;
         private List<int> _usedQuestions = new List<int>();
+
+        private int _timeLeft = 10;
 
         public Form1()
         {
@@ -97,6 +100,8 @@ namespace GeniusOrNot_Windows_Forms
         }
         private void ShowNextQuestion()
         {
+            StopTimer();
+
             if (_usedQuestions.Count >= _questionService.QuestionsCount)
             {
                 FinishTest();
@@ -108,6 +113,8 @@ namespace GeniusOrNot_Windows_Forms
 
             lblQuestion.Text = $"Вопрос {_usedQuestions.Count}:\n{_questionService.GetQuestion(questionIndex)}";
             txtAnswer.Clear();
+
+            StartTimer();
         }
         private void FinishTest()
         {
@@ -124,6 +131,8 @@ namespace GeniusOrNot_Windows_Forms
         }
         private void btnSubmitAnswer_Click(object sender, EventArgs e)
         {
+            StopTimer();
+
             if (!int.TryParse(txtAnswer.Text, out int userAnswer))
             {
                 MessageBox.Show("Введите число!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -143,7 +152,6 @@ namespace GeniusOrNot_Windows_Forms
         {
             ShowResults();
         }
-
         private void menuExit_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Вы уверены, что хотите выйти?", "Подтверждение",
@@ -152,12 +160,42 @@ namespace GeniusOrNot_Windows_Forms
                 Application.Exit();
             }
         }
-
         private void menuQuestions_Click(object sender, EventArgs e)
         {
             var questionsForm = new QuestionsForm();
             questionsForm.ShowDialog();
             _questionService.ReloadQuestions();
+        }
+        private void StartTimer()
+        {
+            _timeLeft = 10;
+            lblTimer.Text = _timeLeft.ToString();
+            lblTimer.Visible = true;
+            timer1.Start();
+
+        }
+        private void StopTimer()
+        {
+            timer1.Stop();
+            lblTimer.Visible = false;
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            _timeLeft--;
+            lblTimer.Text = _timeLeft.ToString();
+
+            if (_timeLeft <=0)
+            {
+                StopTimer();
+                MessageBox.Show("Время вышло!", "Внимание");
+                ShowNextQuestion();
+            }
+
+            //мигание
+            if (_timeLeft <= 3)
+            {
+                lblTimer.ForeColor = (_timeLeft % 2 == 0) ? Color.Red : Color.Yellow;
+            }
         }
     }
 }
