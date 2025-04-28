@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace GeniusOrNot_Core
 {
-    public class UserResult
+    public class QuestionItem
     {
-        public string Name { get; set; }
-        public int CorrectAnswers { get; set; }
-        public string Diagnosis { get; set; }
+        public string Question { get; set; }
+        public int Answer { get; set; }
     }
 }

@@ -4,6 +4,8 @@ namespace GeniusOrNot_Windows_Forms
 {
     partial class Form1
     {
+
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -46,11 +48,21 @@ namespace GeniusOrNot_Windows_Forms
             this.txtName = new System.Windows.Forms.TextBox();
             this.btnStartTest = new System.Windows.Forms.Button();
             this.panelName = new System.Windows.Forms.Panel();
+            this.panelQuestionsManagement = new System.Windows.Forms.Panel();
+            this.dataGridViewQuestions = new System.Windows.Forms.DataGridView();
+            this.btnAddQuestion = new System.Windows.Forms.Button();
+            this.btnRemoveQuestion = new System.Windows.Forms.Button();
+            this.txtNewQuestion = new System.Windows.Forms.TextBox();
+            this.txtNewAnswer = new System.Windows.Forms.TextBox();
+            this.lblManageQuestions = new System.Windows.Forms.Label();
+            this.menuQuestions = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panelResults.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panelQuestions.SuspendLayout();
             this.panelName.SuspendLayout();
+            this.panelQuestionsManagement.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuestions)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -68,6 +80,7 @@ namespace GeniusOrNot_Windows_Forms
             this.mainMenuStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRestart,
             this.menuResults,
+            this.menuQuestions,
             this.menuExit});
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Size = new System.Drawing.Size(53, 20);
@@ -76,19 +89,19 @@ namespace GeniusOrNot_Windows_Forms
             // menuRestart
             // 
             this.menuRestart.Name = "menuRestart";
-            this.menuRestart.Size = new System.Drawing.Size(155, 22);
+            this.menuRestart.Size = new System.Drawing.Size(205, 22);
             this.menuRestart.Text = "Перезапустить";
             // 
             // menuResults
             // 
             this.menuResults.Name = "menuResults";
-            this.menuResults.Size = new System.Drawing.Size(155, 22);
+            this.menuResults.Size = new System.Drawing.Size(205, 22);
             this.menuResults.Text = "Результаты";
             // 
             // menuExit
             // 
             this.menuExit.Name = "menuExit";
-            this.menuExit.Size = new System.Drawing.Size(155, 22);
+            this.menuExit.Size = new System.Drawing.Size(205, 22);
             this.menuExit.Text = "Выход";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
@@ -188,6 +201,78 @@ namespace GeniusOrNot_Windows_Forms
             this.panelName.Size = new System.Drawing.Size(401, 600);
             this.panelName.TabIndex = 0;
             // 
+            // panelQuestionsManagement
+            // 
+            this.panelQuestionsManagement.Controls.Add(this.dataGridViewQuestions);
+            this.panelQuestionsManagement.Controls.Add(this.btnAddQuestion);
+            this.panelQuestionsManagement.Controls.Add(this.btnRemoveQuestion);
+            this.panelQuestionsManagement.Controls.Add(this.txtNewQuestion);
+            this.panelQuestionsManagement.Controls.Add(this.txtNewAnswer);
+            this.panelQuestionsManagement.Controls.Add(this.lblManageQuestions);
+            this.panelQuestionsManagement.Location = new System.Drawing.Point(0, 24);
+            this.panelQuestionsManagement.Name = "panelQuestionsManagement";
+            this.panelQuestionsManagement.Size = new System.Drawing.Size(401, 576);
+            this.panelQuestionsManagement.TabIndex = 3;
+            this.panelQuestionsManagement.Visible = false;
+            // 
+            // dataGridViewQuestions
+            // 
+            this.dataGridViewQuestions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewQuestions.Location = new System.Drawing.Point(10, 40);
+            this.dataGridViewQuestions.Name = "dataGridViewQuestions";
+            this.dataGridViewQuestions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewQuestions.Size = new System.Drawing.Size(380, 400);
+            this.dataGridViewQuestions.TabIndex = 0;
+            // 
+            // btnAddQuestion
+            // 
+            this.btnAddQuestion.Location = new System.Drawing.Point(10, 500);
+            this.btnAddQuestion.Name = "btnAddQuestion";
+            this.btnAddQuestion.Size = new System.Drawing.Size(120, 30);
+            this.btnAddQuestion.TabIndex = 1;
+            this.btnAddQuestion.Text = "Добавить вопрос";
+            this.btnAddQuestion.UseVisualStyleBackColor = true;
+            // 
+            // btnRemoveQuestion
+            // 
+            this.btnRemoveQuestion.Location = new System.Drawing.Point(270, 500);
+            this.btnRemoveQuestion.Name = "btnRemoveQuestion";
+            this.btnRemoveQuestion.Size = new System.Drawing.Size(120, 30);
+            this.btnRemoveQuestion.TabIndex = 2;
+            this.btnRemoveQuestion.Text = "Удалить вопрос";
+            this.btnRemoveQuestion.UseVisualStyleBackColor = true;
+            // 
+            // txtNewQuestion
+            // 
+            this.txtNewQuestion.Location = new System.Drawing.Point(10, 450);
+            this.txtNewQuestion.Name = "txtNewQuestion";
+            this.txtNewQuestion.Size = new System.Drawing.Size(250, 20);
+            this.txtNewQuestion.TabIndex = 3;
+            // 
+            // txtNewAnswer
+            // 
+            this.txtNewAnswer.Location = new System.Drawing.Point(270, 450);
+            this.txtNewAnswer.Name = "txtNewAnswer";
+            this.txtNewAnswer.Size = new System.Drawing.Size(120, 20);
+            this.txtNewAnswer.TabIndex = 4;
+            // 
+            // lblManageQuestions
+            // 
+            this.lblManageQuestions.AutoSize = true;
+            this.lblManageQuestions.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblManageQuestions.Location = new System.Drawing.Point(10, 10);
+            this.lblManageQuestions.Name = "lblManageQuestions";
+            this.lblManageQuestions.Size = new System.Drawing.Size(207, 20);
+            this.lblManageQuestions.TabIndex = 5;
+            this.lblManageQuestions.Text = "Управление вопросами";
+            // 
+            // menuQuestions
+            // 
+            this.menuQuestions.Name = "menuQuestions";
+            this.menuQuestions.Size = new System.Drawing.Size(205, 22);
+            this.menuQuestions.Text = "Управление вопросами";
+            this.menuQuestions.Click += new System.EventHandler(this.menuQuestions_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -208,6 +293,9 @@ namespace GeniusOrNot_Windows_Forms
             this.panelQuestions.PerformLayout();
             this.panelName.ResumeLayout(false);
             this.panelName.PerformLayout();
+            this.panelQuestionsManagement.ResumeLayout(false);
+            this.panelQuestionsManagement.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuestions)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -229,6 +317,14 @@ namespace GeniusOrNot_Windows_Forms
         private TextBox txtName;
         private Button btnStartTest;
         private Panel panelName;
+        private Panel panelQuestionsManagement;
+        private DataGridView dataGridViewQuestions;
+        private Button btnAddQuestion;
+        private Button btnRemoveQuestion;
+        private TextBox txtNewQuestion;
+        private TextBox txtNewAnswer;
+        private Label lblManageQuestions;
+        private ToolStripMenuItem menuQuestions;
     }
 }
 

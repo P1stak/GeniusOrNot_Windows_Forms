@@ -50,7 +50,7 @@ namespace GeniusOrNot_Core
                 _results = JsonConvert.DeserializeObject<List<UserResult>>(json) ?? new List<UserResult>();
                 return _results;
             }
-            catch
+            catch 
             {
                 return new List<UserResult>();
             }

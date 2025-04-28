@@ -10,6 +10,7 @@ namespace GeniusOrNot_Windows_Forms
     public partial class Form1 : Form
     {
         private readonly QuestionService _questionService = new QuestionService();
+        private QuestionsForm _questionsForm;
         private readonly ResultService _resultService = new ResultService();
 
         private int _correctAnswers;
@@ -20,12 +21,7 @@ namespace GeniusOrNot_Windows_Forms
             InitializeComponent();
             InitializeApplicationState();
             InitializeMenu();
-
-            // Проверка существования файла результатов
-            if (!File.Exists("results.csv"))
-            {
-                File.WriteAllText("results.csv", "ФИО;Правильные ответы;Диагноз\n");
-            }
+            menuQuestions.Click += menuQuestions_Click;
         }
         private void InitializeMenu()
         {
@@ -51,6 +47,7 @@ namespace GeniusOrNot_Windows_Forms
         }
         private void StartTest()
         {
+            _questionService.ReloadQuestions();
             _correctAnswers = 0;
             _usedQuestions.Clear();
 
@@ -155,6 +152,13 @@ namespace GeniusOrNot_Windows_Forms
             {
                 Application.Exit();
             }
+        }
+
+        private void menuQuestions_Click(object sender, EventArgs e)
+        {
+            var questionsForm = new QuestionsForm();
+            questionsForm.ShowDialog();
+            _questionService.ReloadQuestions();
         }
     }
 }
